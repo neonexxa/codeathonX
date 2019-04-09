@@ -18,7 +18,13 @@ class learn:
 			'created_at':today,
 			'model_key':model_key }
 		model_id = str(hash(frozenset(pickle_meta.items())))
-		path = setting.model_folder+"/"+userid+"/"+model_id+".pkl"
+		user_path = setting.model_folder+"/"+userid
+		path = user_path+"/"+model_id+".pkl"
+		try:
+		    os.makedirs(user_path)
+		except FileExistsError:
+		    # directory already exists 
+		    pass
 		pickle.dump(self.model_fitted, open(path, 'wb'))
 		# return
 		self.modelid = {
@@ -30,6 +36,7 @@ class predict:
 	def __init__(self, userid, modelid, data_to_predict):
 		# load model here
 		path = setting.model_folder+"/"+userid+"/"+modelid+".pkl"
+		print(path)
 		loaded_model = pickle.load(open(path, 'rb'))
 		# return
 		self.prediction = {
