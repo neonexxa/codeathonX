@@ -1,0 +1,47 @@
+{% extends "layout/app.html" %}
+{% block body %}
+<h1>Performance</h1>
+  {% if session.logged_in %}
+    <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
+      <dl>
+        <dt>Title:
+        <dd><input type=text size=30 name=title>
+        <dt>Text:
+        <dd><textarea name=text rows=5 cols=40></textarea>
+        <dd><input type=submit value=Share>
+      </dl>
+    </form>
+  {% endif %}
+<div id="myDiv" class="chart">
+    </div>
+  <!-- D3.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+ 
+    <script type="text/javascript">
+         var trace1 = {
+          type: 'scatterpolar',
+          r: {{ uspv }},
+          theta: [
+          {% for key in uspk %}
+            "{{key}}",
+          {% endfor %}
+          ],
+          fill: 'toself'
+        }
+        data = [trace1]
+
+        layout = {
+          polar: {
+            radialaxis: {
+              visible: true,
+              range: [0, 100]
+            }
+          },
+          showlegend: false
+        }
+
+        Plotly.plot("myDiv", data, layout)   
+ 
+    </script>
+  
+{% endblock %}
