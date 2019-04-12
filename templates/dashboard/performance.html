@@ -1,6 +1,5 @@
 {% extends "layout/app.html" %}
 {% block body %}
-<h1>Performance</h1>
   {% if session.logged_in %}
     <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
       <dl>
@@ -12,36 +11,108 @@
       </dl>
     </form>
   {% endif %}
-<div id="myDiv" class="chart">
+  <div class="container">
+    <br>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card container">
+          <div id="myDiv" class="chart"></div>    
+          <p class="text-center">Overall Performance</p>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div id="myDiv2" class="chart"></div>    
+          <p class="text-center">Performance Growth / Exercise</p>
+        </div>
+      </div>
     </div>
+    <br>
+    <div class="row">
+      <div class="col-md-10">
+        <!-- Card -->
+        <div class="card">
+
+          <!-- Card image -->
+          <!-- <div class="view overlay">
+            <img class="card-img-top" src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Card image cap">
+            <a href="#!">
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div> -->
+
+          <!-- Card content -->
+          <div class="card-body">
+
+            <!-- Title -->
+            <h4 class="card-title">Card title</h4>
+            <!-- Text -->
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <!-- Button -->
+            <a href="#" class="btn btn-primary">Button</a>
+
+          </div>
+
+        </div>
+        <!-- Card -->
+      </div>
+    </div>
+  </div>
+    
   <!-- D3.js -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
- 
-    <script type="text/javascript">
-         var trace1 = {
-          type: 'scatterpolar',
-          r: {{ uspv }},
-          theta: [
-          {% for key in uspk %}
-            "{{key}}",
-          {% endfor %}
-          ],
-          fill: 'toself'
-        }
-        data = [trace1]
-
-        layout = {
-          polar: {
-            radialaxis: {
-              visible: true,
-              range: [0, 100]
-            }
-          },
-          showlegend: false
-        }
-
-        Plotly.plot("myDiv", data, layout)   
- 
-    </script>
   
+{% endblock %}
+{% block script %}
+ 
+<script type="text/javascript">
+     var trace1 = {
+      type: 'scatterpolar',
+      r: {{ uspv }},
+      theta: [
+      {% for key in uspk %}
+        "{{key}}",
+      {% endfor %}
+      ],
+      fill: 'toself'
+    }
+    data = [trace1]
+
+    layout = {
+      width: 280,
+      height: 280,
+      polar: {
+        radialaxis: {
+          visible: true,
+          range: [0, 100]
+        }
+      },
+      showlegend: false
+    }
+
+    Plotly.plot("myDiv", data, layout)  
+
+    var trace1 = {
+      x: [1, 2, 3, 4],
+      y: [0, 2, 3, 5],
+      fill: 'tozeroy',
+      type: 'scatter',
+      name: 'Actual preformance'
+    };
+
+    var trace2 = {
+      x: [1, 2, 3, 4],
+      y: [3, 5, 1, 7],
+      fill: 'tonexty',
+      type: 'scatter',
+      name: 'Predicted preformance'
+    };
+    layout = {
+      height: 280,
+    }
+
+    var data = [trace1, trace2];
+
+    Plotly.newPlot('myDiv2', data,layout); 
+
+</script>
 {% endblock %}

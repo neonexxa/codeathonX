@@ -18,5 +18,8 @@ def performance():
 		user_performance = performance_chart("1213131312")
 		print(user_performance.performance_data)
 		uspv = list(user_performance.performance_data.values())
-		uspk = list(user_performance.performance_data.keys())
-		return render_template('dashboard/performance.html',uspv=uspv,uspk=uspk)
+		uspk = []
+		for i in list(user_performance.performance_data.keys()):
+			print(i.split('_')[1])
+			uspk.append(i.split('_')[1])
+		return render_template('dashboard/performance.html',pagetitle="Performance",uspv=uspv,uspk=uspk)
